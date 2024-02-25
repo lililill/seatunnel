@@ -368,13 +368,13 @@ public class MultipleTableJobConfigParser {
                 inputIds.stream()
                         .map(tableWithActionMap::get)
                         .filter(Objects::nonNull)
-                        .peek(
-                                input -> {
-                                    if (input.size() > 1) {
-                                        throw new JobDefineCheckException(
-                                                "Adding transform to multi-table source is not supported.");
-                                    }
-                                })
+//                        .peek(
+//                                input -> {
+//                                    if (input.size() > 1) {
+//                                        throw new JobDefineCheckException(
+//                                                "Adding transform to multi-table source is not supported.");
+//                                    }
+//                                })
                         .flatMap(Collection::stream)
                         .collect(Collectors.toList());
         if (inputs.isEmpty()) {
