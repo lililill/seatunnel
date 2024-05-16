@@ -52,13 +52,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-/** Utils to prepare Oracle SQL statement. */
+/**
+ * Utils to prepare Oracle SQL statement.
+ */
 @Slf4j
 public class OracleUtils {
 
     private static final int DEFAULT_FETCH_SIZE = 1024;
 
-    private OracleUtils() {}
+    private OracleUtils() {
+    }
 
     public static Object[] queryMinMax(JdbcConnection jdbc, TableId tableId, String columnName)
             throws SQLException {
@@ -339,7 +342,9 @@ public class OracleUtils {
         return getSplitType(primaryKeys.get(0));
     }
 
-    /** Creates a new {@link OracleDatabaseSchema} to monitor the latest oracle database schemas. */
+    /**
+     * Creates a new {@link OracleDatabaseSchema} to monitor the latest oracle database schemas.
+     */
     public static OracleDatabaseSchema createOracleDatabaseSchema(
             OracleConnectorConfig dbzOracleConfig, OracleConnection connection) {
         TopicSelector<TableId> topicSelector = OracleTopicSelector.defaultSelector(dbzOracleConfig);
@@ -357,7 +362,9 @@ public class OracleUtils {
                 tableNameCaseSensitivity);
     }
 
-    /** Creates a new {@link OracleDatabaseSchema} to monitor the latest oracle database schemas. */
+    /**
+     * Creates a new {@link OracleDatabaseSchema} to monitor the latest oracle database schemas.
+     */
     public static OracleDatabaseSchema createOracleDatabaseSchema(
             OracleConnectorConfig dbzOracleConfig,
             OracleConnection connection,
@@ -393,8 +400,8 @@ public class OracleUtils {
 
     public static SeaTunnelRowType getSplitType(Column splitColumn) {
         return new SeaTunnelRowType(
-                new String[] {splitColumn.name()},
-                new SeaTunnelDataType<?>[] {OracleTypeUtils.convertFromColumn(splitColumn)});
+                new String[]{splitColumn.name()},
+                new SeaTunnelDataType<?>[]{OracleTypeUtils.convertFromColumn(splitColumn)});
     }
 
     public static Column getSplitColumn(Table table) {
@@ -438,8 +445,8 @@ public class OracleUtils {
     private static void addPrimaryKeyColumnsToCondition(
             SeaTunnelRowType rowType, StringBuilder sql, String predicate) {
         for (Iterator<String> fieldNamesIt = Arrays.stream(rowType.getFieldNames()).iterator();
-                fieldNamesIt.hasNext(); ) {
-            sql.append(fieldNamesIt.next()).append(predicate);
+             fieldNamesIt.hasNext(); ) {
+            sql.append(quote(fieldNamesIt.next())).append(predicate);
             if (fieldNamesIt.hasNext()) {
                 sql.append(" AND ");
             }
@@ -449,7 +456,7 @@ public class OracleUtils {
     private static String getPrimaryKeyColumnsProjection(SeaTunnelRowType rowType) {
         StringBuilder sql = new StringBuilder();
         for (Iterator<String> fieldNamesIt = Arrays.stream(rowType.getFieldNames()).iterator();
-                fieldNamesIt.hasNext(); ) {
+             fieldNamesIt.hasNext(); ) {
             sql.append(fieldNamesIt.next());
             if (fieldNamesIt.hasNext()) {
                 sql.append(" , ");
@@ -461,7 +468,7 @@ public class OracleUtils {
     private static String getMaxPrimaryKeyColumnsProjection(SeaTunnelRowType rowType) {
         StringBuilder sql = new StringBuilder();
         for (Iterator<String> fieldNamesIt = Arrays.stream(rowType.getFieldNames()).iterator();
-                fieldNamesIt.hasNext(); ) {
+             fieldNamesIt.hasNext(); ) {
             sql.append("MAX(" + fieldNamesIt.next() + ")");
             if (fieldNamesIt.hasNext()) {
                 sql.append(" , ");
