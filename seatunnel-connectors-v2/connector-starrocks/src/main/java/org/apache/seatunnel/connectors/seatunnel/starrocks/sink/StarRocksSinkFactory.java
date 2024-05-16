@@ -86,7 +86,7 @@ public class StarRocksSinkFactory implements TableSinkFactory {
         String sourceTableName = tableId.getTableName();
         // get sink table relevant information
         String sinkDatabaseName = sinkConfig.getDatabase();
-        String sinkTableName = sinkConfig.getTable();
+        String sinkTableName = sinkConfig.getTable().toLowerCase();
         // to replace
         String finalDatabaseName =
                 sinkDatabaseName.replace(REPLACE_DATABASE_NAME_KEY, sourceDatabaseName);

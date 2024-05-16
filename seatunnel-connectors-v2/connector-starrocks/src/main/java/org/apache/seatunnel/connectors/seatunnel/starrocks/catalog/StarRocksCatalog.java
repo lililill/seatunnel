@@ -133,8 +133,8 @@ public class StarRocksCatalog implements Catalog {
         }
 
         try (Connection conn =
-                DriverManager.getConnection(
-                        urlInfo.getUrlWithDatabase(databaseName), username, pwd)) {
+                     DriverManager.getConnection(
+                             urlInfo.getUrlWithDatabase(databaseName), username, pwd)) {
             PreparedStatement ps = conn.prepareStatement("SHOW TABLES;");
 
             ResultSet rs = ps.executeQuery();
@@ -217,7 +217,7 @@ public class StarRocksCatalog implements Catalog {
                 StarRocksSaveModeUtil.fillingCreateSql(
                         template,
                         tablePath.getDatabaseName(),
-                        tablePath.getTableName(),
+                        tablePath.getTableName().toLowerCase(),
                         table.getTableSchema()));
     }
 
@@ -310,7 +310,9 @@ public class StarRocksCatalog implements Catalog {
         }
     }
 
-    /** @see com.mysql.cj.MysqlType */
+    /**
+     * @see com.mysql.cj.MysqlType
+     */
     private SeaTunnelDataType<?> fromJdbcType(ResultSetMetaData metadata, int colIndex)
             throws SQLException {
         MysqlType starrocksType = MysqlType.getByName(metadata.getColumnTypeName(colIndex));

@@ -45,6 +45,7 @@ public class StarRocksSinkManager {
     public StarRocksSinkManager(SinkConfig sinkConfig, List<String> fileNames) {
         this.sinkConfig = sinkConfig;
         this.batchList = new ArrayList<>();
+        sinkConfig.setTable(sinkConfig.getTable().toLowerCase());
         starrocksStreamLoadVisitor = new StarRocksStreamLoadVisitor(sinkConfig, fileNames);
     }
 
