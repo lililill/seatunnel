@@ -105,6 +105,7 @@ public class SqlServerCatalog extends AbstractJdbcCatalog {
         int precision = resultSet.getInt("precision");
         int scale = resultSet.getInt("scale");
         long columnLength = resultSet.getLong("max_length");
+        columnLength = DATA_TYPE_CONVERTOR.toCustomColumnLength(SqlServerType.parse(sourceType).getLeft(), columnLength);
         SeaTunnelDataType<?> type = fromJdbcType(columnName, sourceType, precision, scale);
         String comment = resultSet.getString("comment");
         Object defaultValue = resultSet.getObject("default_value");
@@ -224,7 +225,7 @@ public class SqlServerCatalog extends AbstractJdbcCatalog {
             if (StringUtils.isNotBlank(tablePath.getDatabaseName())) {
                 return databaseExists(tablePath.getDatabaseName())
                         && listTables(tablePath.getDatabaseName())
-                                .contains(tablePath.getSchemaAndTableName());
+                        .contains(tablePath.getSchemaAndTableName());
             }
             return listTables(defaultDatabase).contains(tablePath.getSchemaAndTableName());
         } catch (DatabaseNotExistException e) {

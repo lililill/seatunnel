@@ -83,6 +83,7 @@ public class SqlServerDataTypeConvertor implements DataTypeConvertor<SqlServerTy
             case TEXT:
             case XML:
             case GUID:
+                return BasicType.STRING_TYPE;
             case SQL_VARIANT:
                 return BasicType.STRING_TYPE;
             case DATE:
@@ -105,6 +106,18 @@ public class SqlServerDataTypeConvertor implements DataTypeConvertor<SqlServerTy
                         DatabaseIdentifier.SQLSERVER, connectorDataType.toString(), field);
         }
     }
+    //处理自定义字段类型/特殊类型的的
+    public long toCustomColumnLength(
+            @NonNull SqlServerType connectorDataType,
+            long columnLength) {
+        switch (connectorDataType) {
+            case GUID:
+                return 36L;
+            default:
+                return columnLength;
+        }
+    }
+
 
     @Override
     public SqlServerType toConnectorType(
