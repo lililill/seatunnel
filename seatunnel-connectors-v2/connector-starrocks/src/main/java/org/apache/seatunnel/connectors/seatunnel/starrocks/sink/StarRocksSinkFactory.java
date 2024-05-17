@@ -107,6 +107,7 @@ public class StarRocksSinkFactory implements TableSinkFactory {
         // reset
         sinkConfig.setTable(finalTableName);
         sinkConfig.setDatabase(finalDatabaseName);
+        //配置切换大小写
         return () -> new StarRocksSink(sinkConfig, finalCatalogTable, context.getOptions());
     }
 
