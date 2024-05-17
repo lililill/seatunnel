@@ -20,6 +20,8 @@ package org.apache.seatunnel.connectors.seatunnel.starrocks.sink;
 import org.apache.seatunnel.api.configuration.util.OptionRule;
 import org.apache.seatunnel.api.sink.DataSaveMode;
 import org.apache.seatunnel.api.table.catalog.CatalogTable;
+import org.apache.seatunnel.api.table.catalog.Column;
+import org.apache.seatunnel.api.table.catalog.PhysicalColumn;
 import org.apache.seatunnel.api.table.catalog.TableIdentifier;
 import org.apache.seatunnel.api.table.connector.TableSink;
 import org.apache.seatunnel.api.table.factory.Factory;
@@ -36,6 +38,7 @@ import com.google.auto.service.AutoService;
 import static org.apache.seatunnel.api.sink.SinkReplaceNameConstant.REPLACE_DATABASE_NAME_KEY;
 import static org.apache.seatunnel.api.sink.SinkReplaceNameConstant.REPLACE_SCHEMA_NAME_KEY;
 import static org.apache.seatunnel.api.sink.SinkReplaceNameConstant.REPLACE_TABLE_NAME_KEY;
+import static org.apache.seatunnel.api.table.type.BasicType.STRING_TYPE;
 import static org.apache.seatunnel.connectors.seatunnel.starrocks.config.StarRocksSinkOptions.DATA_SAVE_MODE;
 
 @AutoService(Factory.class)
@@ -107,7 +110,18 @@ public class StarRocksSinkFactory implements TableSinkFactory {
         // reset
         sinkConfig.setTable(finalTableName);
         sinkConfig.setDatabase(finalDatabaseName);
-        //配置切换大小写
+        //判断是否需要加自定义字段
+        for (String field : sinkConfig.getAddFields().keySet()) {
+            PhysicalColumn addColumn =
+                    PhysicalColumn.of(
+                            field,
+                            STRING_TYPE,
+                            32,
+                            true,
+                            null,
+                            null);
+            catalogTable.getTableSchema().getColumns().add(addColumn);
+        }
         return () -> new StarRocksSink(sinkConfig, finalCatalogTable, context.getOptions());
     }
 

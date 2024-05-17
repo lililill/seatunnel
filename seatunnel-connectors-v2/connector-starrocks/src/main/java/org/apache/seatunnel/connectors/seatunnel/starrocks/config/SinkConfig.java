@@ -27,6 +27,7 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +68,8 @@ public class SinkConfig implements Serializable {
 
     @Getter private final Map<String, Object> streamLoadProps = new HashMap<>();
 
+    @Getter private final Map<String, Object> addFields = new LinkedHashMap<>();
+
     public static SinkConfig of(ReadonlyConfig config) {
         SinkConfig sinkConfig = new SinkConfig();
         sinkConfig.setNodeUrls(config.get(StarRocksSinkOptions.NODE_URLS));
@@ -91,6 +94,8 @@ public class SinkConfig implements Serializable {
                 .ifPresent(sinkConfig::setSaveModeCreateTemplate);
         config.getOptional(StarRocksSinkOptions.STARROCKS_CONFIG)
                 .ifPresent(options -> sinkConfig.getStreamLoadProps().putAll(options));
+        config.getOptional(StarRocksSinkOptions.ADD_FIELDS)
+                .ifPresent(options -> sinkConfig.getAddFields().putAll(options));
         config.getOptional(StarRocksSinkOptions.COLUMN_SEPARATOR)
                 .ifPresent(sinkConfig::setColumnSeparator);
         sinkConfig.setLoadFormat(config.get(StarRocksSinkOptions.LOAD_FORMAT));

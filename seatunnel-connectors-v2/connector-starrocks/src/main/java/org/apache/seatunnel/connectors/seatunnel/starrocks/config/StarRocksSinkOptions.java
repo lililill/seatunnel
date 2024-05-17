@@ -154,4 +154,11 @@ public interface StarRocksSinkOptions {
                     .stringType()
                     .noDefaultValue()
                     .withDescription("when schema_save_mode selects CUSTOM_PROCESSING custom SQL");
+
+
+    Option<Map<String, String>> ADD_FIELDS =
+            Options.key("addFields")
+                    .mapType()
+                    .noDefaultValue()
+                    .withDescription("addFields");
 }
