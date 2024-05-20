@@ -107,7 +107,7 @@ public class OracleDataTypeConvertor implements DataTypeConvertor<String> {
                     if (precision <= 9) {
                         return BasicType.INT_TYPE;
                     }
-                    if (precision <= 18) {
+                    if (precision <= 19) {
                         return BasicType.LONG_TYPE;
                     }
                 }
