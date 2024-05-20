@@ -99,7 +99,7 @@ public class OracleDataTypeConvertor implements DataTypeConvertor<String> {
                 int scale = MapUtils.getInteger(dataTypeProperties, SCALE, DEFAULT_SCALE);
                 if (scale == 0) {
                     if (precision == 0) {
-                        return new DecimalType(38, 18);
+                        return BasicType.LONG_TYPE;
                     }
                     if (precision == 1) {
                         return BasicType.BOOLEAN_TYPE;
